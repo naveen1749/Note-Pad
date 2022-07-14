@@ -4,7 +4,7 @@
     Features
   </H3>
   <ol>
-    <li>All Note Pad Feauchers </li>
+    <li>All Note Pad Features </li>
     <li>Custom Themes for text and background</li>
     <li>Different Fonts</li>
     <li>Dark Mode </li>
