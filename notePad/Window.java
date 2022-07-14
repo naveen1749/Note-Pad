@@ -8,10 +8,11 @@ import java.awt.event.KeyEvent;
 public class Window<T> extends JFrame {
 
      JLabel statusLabel;
-     JMenu edit,help,file,window,view;
-   static  JMenuBar bar;
-   protected  JMenuItem cut,copy,paste,selectAll,search,replace,save,New,newWindow,open,theme,inc,dic,goTo,zoomIn,zoomOut,setFont,wrapLine,wrapText
-           ,font,statusBar;
+     JMenu edit,help,file,window,view,WindowSize,textSize;
+     JMenuBar bar;
+   protected  JMenuItem cut,copy,paste,selectAll,search,replace,save,New,
+           newWindow,open,theme,inc,dic,goTo,zoomIn,zoomOut,wrapLine,wrapText
+           ,font,statusBar,commands;
    protected   JTextArea ta;
    protected JToggleButton darkMode;
    Listeners obj;
@@ -19,6 +20,7 @@ public class Window<T> extends JFrame {
    int MENU=0;
    int width=500;
    int height=500;
+   JButton undo,redo;
 
 boolean bt;
    Color bgColor=Color.white,textColor=Color.black;
@@ -27,8 +29,8 @@ boolean bt;
         this.obj=new Listeners(this);
         darkMode=new JToggleButton("Dark mode");
         darkMode.setFocusable(false);
-        darkMode.addActionListener(obj);
-        darkMode.setSelected(true);
+        darkMode.addItemListener(obj);
+        darkMode.setBackground(Color.BLUE);
         darkMode.addMouseListener(obj);
 
             statusLabel =new JLabel();
@@ -49,7 +51,6 @@ try{
     }
     private JTextArea createContentPane(){
          ta= new JTextArea("",10,10);
-        ta.addKeyListener(obj);
         ta.setBackground(bgColor);
         ta.setForeground(textColor);
         ta.setLineWrap(true);
@@ -63,6 +64,8 @@ try{
     private T createMenuBar(){
 
        bar =new JMenuBar();
+       bar.setSize(width,35);
+
 
         edit =(JMenu)create("Edit",KeyEvent.VK_E,MENU);
         help=(JMenu)create("Help",KeyEvent.VK_H,MENU);
@@ -81,18 +84,21 @@ try{
          //items of help
         search =  (JMenuItem) create("Search",KeyEvent.VK_S,MENUITEM);
         replace =  (JMenuItem) create("Replace",KeyEvent.VK_R,MENUITEM);
+        commands =  (JMenuItem) create("Commands",KeyEvent.VK_C,MENUITEM);
         //items of file
         save =  (JMenuItem) create("Save",KeyEvent.VK_S,MENUITEM);
         New =  (JMenuItem) create("New",KeyEvent.VK_N,MENUITEM);
         newWindow= (JMenuItem) create("New Window",KeyEvent.VK_W,MENUITEM);
         open=(JMenuItem)create("Open",KeyEvent.VK_O,MENUITEM);
         //items of window
-        inc=(JMenuItem)create("+",KeyEvent.VK_PLUS,MENUITEM);
-        dic=(JMenuItem)create("-",KeyEvent.VK_MINUS,MENUITEM);
-        zoomIn=(JMenuItem)create("zoom In",KeyEvent.VK_I,MENUITEM);
-        zoomOut=(JMenuItem)create("zoom Out",KeyEvent.VK_O,MENUITEM);
+        WindowSize =(JMenu) create("Window Size",KeyEvent.VK_S,MENU);
+        textSize =(JMenu) create("Text Size",KeyEvent.VK_T,MENU);
+        inc=(JMenuItem)create("Increase",KeyEvent.VK_I,MENUITEM);
+        dic=(JMenuItem)create("Decrease",KeyEvent.VK_D,MENUITEM);
+        zoomIn=(JMenuItem)create("Increase",KeyEvent.VK_I,MENUITEM);
+        zoomOut=(JMenuItem)create("Decrease",KeyEvent.VK_D,MENUITEM);
         goTo=(JMenuItem)create("Go To",KeyEvent.VK_G,MENUITEM);
-        setFont=(JMenuItem)create("Go To",KeyEvent.VK_G,MENUITEM);
+
         //items of View
         wrapLine=(JMenuItem) create("Wrap Line",KeyEvent.VK_L,MENUITEM);
         wrapText=(JMenuItem) create("Wrap Text",KeyEvent.VK_T,MENUITEM);
@@ -104,19 +110,31 @@ try{
         ta.setWrapStyleWord(false);
         ta.setLineWrap(false);
         //adding items into menu
+        WindowSize.add(inc);WindowSize.add(dic);
+        textSize.add(zoomIn);textSize.add(zoomOut);
         edit.add(cut);edit.add(copy);edit.add(paste);edit.add(selectAll);
-        help.add(search);help.add(replace);
+        help.add(search);help.add(replace);help.add(WindowSize);help.add(commands);
         file.add(New);file.add(open);file.add(newWindow);file.add(save);
-        window.add(inc);window.add(dic);window.add(goTo);window.add(zoomIn);window.add(zoomOut);window.add(setFont);
+        window.add(WindowSize);window.add(textSize);window.add(goTo);
         view.add(wrapLine);view.add(wrapText);view.add(font);view.add(theme);view.add(statusBar);
 
+        undo = new JButton();
+        undo.addActionListener(obj);
+        undo.setFocusable(false);
+        undo.setIcon(new ImageIcon("C:\\Users\\naveen\\IdeaProjects\\forSwing\\src\\notePad\\Images\\img_1.png"));
+        redo = new JButton();
+        redo.setFocusable(false);
+        redo.addActionListener(obj);
+        redo.setIcon(new ImageIcon("C:\\Users\\naveen\\IdeaProjects\\forSwing\\src\\notePad\\Images\\img.png"));
         //adding menu into bar
-        bar.add(edit);
-        bar.add(help);
         bar.add(file);
+        bar.add(edit);
         bar.add(window);
         bar.add(view);
+        bar.add(help);
         bar.add(darkMode);
+        bar.add(undo);
+        bar.add(redo);
         bar.requestFocus();
 
 
